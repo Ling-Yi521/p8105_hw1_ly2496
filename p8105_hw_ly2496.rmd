@@ -5,7 +5,7 @@ date: "9/15/2020"
 output: github_document
 ---
 
-This is my solutiont to hw1
+This is my solution to hw1
 
 ```{r}
 library(tidyverse)
