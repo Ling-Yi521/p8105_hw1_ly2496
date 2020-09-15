@@ -1,0 +1,68 @@
+---
+title: "p8510_hw1_ly2496"
+author: Ling Yi
+date: "9/15/2020"
+output: github_document
+---
+
+This is my solutiont to hw1
+
+```{r}
+library(tidyverse)
+```
+
+
+##Problem 1
+
+Create a data frame for the specified elements
+
+```{r}
+
+prob1_df <- 
+  tibble (
+    samp = rnorm(10),
+    sampe_gt_0 = samp >0, 
+    char_vec = c("a", "b", "c", "d", "e", "f", "G", "h", "I", "j"),
+    factor_vec = factor(c("low", "low", "low", "med", "med", "med", "med", "high", "high", "high"))
+ 
+ ) 
+
+```
+
+
+Take the mean of each variable in the data frame
+
+
+```{r}
+
+mean(pull(prob1_df, samp))
+mean(pull(prob1_df, sampe_gt_0))
+mean(pull(prob1_df, char_vec))
+mean(pull(prob1_df, factor_vec))
+
+```
+
+I can take the mean of numbers of logical, but not character or vectors. 
+variable coercion (taking those that is logical and turning them into the numbers and then taking the mean of it. This can get us into trouble. Sometimes we may not want this)
+cannot take the mean of this because this is a character variable. Nto a number
+
+```{r}
+
+as.numeric(pull(prob1_df, samp))
+as.numeric(pull(prob1_df, sampe_gt_0))
+##R is making the Ts and Fs into 1 or 0
+as.numeric(pull(prob1_df, char_vec))
+as.numeric(pull(prob1_df, factor_vec))
+
+```
+
+```{r}
+as.numeric(pull(prob1_df, samp)) * pull(prob1_df, samp)
+as.numeric(pull(prob1_df, sampe_gt_0))
+as.numeric(pull(prob1_df, char_vec))
+as.numeric(pull(prob1_df, factor_vec))
+```
+
+
+
+
