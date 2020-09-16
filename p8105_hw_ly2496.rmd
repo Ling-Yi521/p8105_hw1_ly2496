@@ -42,9 +42,9 @@ mean(pull(prob1_df, factor_vec))
 
 ```
 
-I can take the mean of numbers of logical, but not character or vectors. 
-variable coercion (taking those that is logical and turning them into the numbers and then taking the mean of it. This can get us into trouble. Sometimes we may not want this)
-cannot take the mean of this because this is a character variable. Nto a number
+I can take the mean of numeric or logical variables, but not character or vectors. 
+For the logical vector, R is conducting variable coercion (taking those that is logical and turning them into the numbers and then taking the mean of it)
+
 
 ```{r}
 
@@ -57,10 +57,45 @@ as.numeric(pull(prob1_df, factor_vec))
 
 ```{r}
 as.numeric(pull(prob1_df, samp)) * pull(prob1_df, samp)
-as.numeric(pull(prob1_df, sampe_gt_0))
-as.numeric(pull(prob1_df, char_vec))
-as.numeric(pull(prob1_df, factor_vec))
+as.factor (pull(prob1_df, samp)) * pull(prob1_df, samp)
+##Returned an error message stating not meaningful for vectors 
+as.factor(pull(prob1_df, sampe_gt_0))
+as.numeric(pull(prob1_df, sampe_gt_0)) *pull(prob1_df, samp)
+
 ```
+##Problem 2
+
+```{r}
+install.packages("palmerpenguins")
+
+data("penguins", package = "palmerpenguins")
+
+```
+
+**descirption of the penguins data set using inline R code**
+
+
+This code `r summary(penguins)` will be used to get the names and the values for each variable in the dataset. 
+This code `r nrow(penguins)` and `r ncol(penguins)` will be used to get the total number of rows and columns in the dataset respectively. 
+This code `r mean(penguins$lipper_length_mm)` will be used to get the mean flipper length. 
+
+
+**creating a scatterplot of the flipper_length_mm (y) vs bill_length_mm (x)**
+
+```{r}
+library(ggplot2)
+
+ggplot(data = penguins, mapping = aes(x = bill_length_mm, y=flipper_length_mm, color=species)) + geom_point() +
+labs(x = "Bill Length (mm)", y = "Flipper Length (mm)")+
+  ggtitle("Plot of Flipper and Bill (mm)")
+```
+**exporting the plot to project directory**
+
+```{r}
+ggsave("Scatter_plot_flipper_bill.pdf", height = 4, width = 6)
+)
+```
+
 
 
 
