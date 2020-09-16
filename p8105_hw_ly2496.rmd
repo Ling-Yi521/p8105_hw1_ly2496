@@ -50,7 +50,6 @@ cannot take the mean of this because this is a character variable. Nto a number
 
 as.numeric(pull(prob1_df, samp))
 as.numeric(pull(prob1_df, sampe_gt_0))
-##R is making the Ts and Fs into 1 or 0
 as.numeric(pull(prob1_df, char_vec))
 as.numeric(pull(prob1_df, factor_vec))
 
