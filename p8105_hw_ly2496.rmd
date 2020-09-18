@@ -21,7 +21,7 @@ Create a data frame for the specified elements
 prob1_df <- 
   tibble (
     samp = rnorm(10),
-    sampe_gt_0 = samp >0, 
+    samp_gt_0 = samp >0, 
     char_vec = c("a", "b", "c", "d", "e", "f", "G", "h", "I", "j"),
     factor_vec = factor(c("low", "low", "low", "med", "med", "med", "med", "high", "high", "high"))
  
@@ -36,48 +36,60 @@ Take the mean of each variable in the data frame
 ```{r}
 
 mean(pull(prob1_df, samp))
-mean(pull(prob1_df, sampe_gt_0))
+mean(pull(prob1_df, samp_gt_0))
 mean(pull(prob1_df, char_vec))
 mean(pull(prob1_df, factor_vec))
 
 ```
 
-I can take the mean of numeric or logical variables, but not character or vectors. 
+I can take the mean of numeric or logical variables, but not character or vectors (which both returned NA) 
 For the logical vector, R is conducting variable coercion (taking those that is logical and turning them into the numbers and then taking the mean of it)
 
 
 ```{r}
 
 as.numeric(pull(prob1_df, samp))
-as.numeric(pull(prob1_df, sampe_gt_0))
+as.numeric(pull(prob1_df, samp_gt_0))
 as.numeric(pull(prob1_df, char_vec))
 as.numeric(pull(prob1_df, factor_vec))
 
 ```
 
+R is able to convert numerical, logical, and factor variables into numbers. for the logical character, the variables are converted to 1 or 0, therefore, R is able to take the mean. R also converts the factor variable to 1, 2, or 3 to represent the three levels. However, it was unable to convert character variables into numeric value. 
+
 ```{r}
-as.numeric(pull(prob1_df, samp)) * pull(prob1_df, samp)
-as.factor (pull(prob1_df, samp)) * pull(prob1_df, samp)
-##Returned an error message stating not meaningful for vectors 
-as.factor(pull(prob1_df, sampe_gt_0))
-as.numeric(pull(prob1_df, sampe_gt_0)) *pull(prob1_df, samp)
+#a. 
+as.numeric(pull(prob1_df, samp_gt_0)) * pull(prob1_df, samp)
+#b. 
+as.factor (pull(prob1_df, samp_gt_0)) * pull(prob1_df, samp)
+#c. 
+as.factor(pull(prob1_df, samp_gt_0))
+as.numeric(pull(prob1_df, samp_gt_0))*pull(prob1_df, samp)
+
+list(prob1_df)
 
 ```
+
+I was unable to take the product of the logical variable after it was converted to a numeric value and multiplying it by the result. I was also able to take the product after converting it to a factor and then converting the results to a numeric. However, I was unable to take the product when trying to multiply it after converting a logical variable to a factor variable. 
+
+
 ##Problem 2
 
 ```{r}
-install.packages("palmerpenguins")
 
 data("penguins", package = "palmerpenguins")
 
+filter(penguins, sex=="male") %>% nrow()
+
 ```
 
-**descirption of the penguins data set using inline R code**
 
+The Variables in this date set are `r names(penguins)`.
+There are three difference species of penguins in the data set and the number of Adelie is `r filter(penguins, species=="Adelie") %>% nrow()`, and number of Chinstrap is `r filter(penguins, species=="Chinstrap") %>% nrow()` and the number of Gentoo is `r filter(penguins, species=="Chinstrap") %>% nrow()`. There are four different continunous descriptive variable, which are bill length, bill depth, flipper length, body mass with mean values of `r mean(pull(penguins, bill_length_mm), na.rm=TRUE)`mm, `r mean(pull(penguins, bill_depth_mm), na.rm=TRUE)`mm, `r mean(pull(penguins, flipper_length_mm), na.rm=TRUE)`mm, and `r mean(pull(penguins, body_mass_g), na.rm=TRUE)`g respectively. One interesting observation from this table is that most of the penguins came from the Biscoe island (`r filter(penguins, island=="Biscoe") %>% nrow()`) and from the Dream island (`r filter(penguins, island=="Dream") %>% nrow()`) with the least coming from the Torgersen island (`r filter(penguins, island=="Torgersen") %>% nrow()`). Furthermore, the female to male ratio for the penguins is `r filter(penguins, sex=="female") %>% nrow()` to `r filter(penguins, sex=="male") %>% nrow()`. There are `r sum(is.na(pull(penguins, bill_length_mm)))` missing values for bill length, `r sum(is.na(pull(penguins, bill_depth_mm)))` for bill depth, and `r sum(is.na(pull(penguins, flipper_length_mm)))` for flipper length, but there are `r sum(is.na(pull(penguins, sex)))` missing values for sex. The minimum body mass is `r min(pull(penguins, body_mass_g), na.rm=TRUE)` and the maximum body mass is `r max(pull(penguins, body_mass_g), na.rm=TRUE)` in grams. Both numbers are in the thousands, so it is interesting that they did not use kg as the unit of analysis. Further descriptive analysis would require cross-tabulation. 
 
-This code `r summary(penguins)` will be used to get the names and the values for each variable in the dataset. 
-This code `r nrow(penguins)` and `r ncol(penguins)` will be used to get the total number of rows and columns in the dataset respectively. 
-This code `r mean(penguins$lipper_length_mm)` will be used to get the mean flipper length. 
+The number of rows in the data set is `r nrow(penguins)` and the number of columns in this data set is `r ncol(penguins)`. 
+
+The mean of the flipper length is `r mean(pull(penguins, flipper_length_mm), na.rm=TRUE)`mm. 
 
 
 **creating a scatterplot of the flipper_length_mm (y) vs bill_length_mm (x)**
@@ -87,13 +99,13 @@ library(ggplot2)
 
 ggplot(data = penguins, mapping = aes(x = bill_length_mm, y=flipper_length_mm, color=species)) + geom_point() +
 labs(x = "Bill Length (mm)", y = "Flipper Length (mm)")+
-  ggtitle("Plot of Flipper and Bill (mm)")
+  ggtitle("Flipper by Bill Length (mm)")
 ```
 **exporting the plot to project directory**
 
 ```{r}
 ggsave("Scatter_plot_flipper_bill.pdf", height = 4, width = 6)
-)
+
 ```
 
 
