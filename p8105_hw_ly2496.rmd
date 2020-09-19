@@ -42,8 +42,8 @@ mean(pull(prob1_df, factor_vec))
 
 ```
 
-I can take the mean of numeric or logical variables, but not character or vectors (which both returned NA) 
-For the logical vector, R is conducting variable coercion (taking those that is logical and turning them into the numbers and then taking the mean of it)
+I can take the mean of numeric or logical variables, but not character or factors (which both returned NA) 
+For the logical vector, R is conducting variable coercion (taking those that are logical and turning them into the numbers and then taking the mean of it)
 
 
 ```{r}
@@ -55,7 +55,7 @@ as.numeric(pull(prob1_df, factor_vec))
 
 ```
 
-R is able to convert numerical, logical, and factor variables into numbers. for the logical character, the variables are converted to 1 or 0, therefore, R is able to take the mean. R also converts the factor variable to 1, 2, or 3 to represent the three levels. However, it was unable to convert character variables into numeric value. 
+R is able to convert numerical, logical, and factor variables into numbers. For the logical variables, the variables are entries into 1 or 0, therefore, R is able to take the mean. R also converts the factor variable to 1, 2, or 3 to represent the three levels. However, it was unable to convert character variables into numeric value. This process is called variable coercion. 
 
 ```{r}
 #a. 
@@ -66,11 +66,9 @@ as.factor (pull(prob1_df, samp_gt_0)) * pull(prob1_df, samp)
 as.factor(pull(prob1_df, samp_gt_0))
 as.numeric(pull(prob1_df, samp_gt_0))*pull(prob1_df, samp)
 
-list(prob1_df)
-
 ```
 
-I was unable to take the product of the logical variable after it was converted to a numeric value and multiplying it by the result. I was also able to take the product after converting it to a factor and then converting the results to a numeric. However, I was unable to take the product when trying to multiply it after converting a logical variable to a factor variable. 
+I was able to take the product when converting the logical variable to a numeric value and multiplying it by the result. I was also able to take the product after converting it to a factor and then converting the results to a numeric before multiplying it by the result. However, I was unable to take the product when trying to multiply after converting a logical variable to a factor variable and multiplying to by the result. 
 
 
 ##Problem 2
@@ -79,9 +77,8 @@ I was unable to take the product of the logical variable after it was converted 
 
 data("penguins", package = "palmerpenguins")
 
-filter(penguins, sex=="male") %>% nrow()
-
 ```
+Description of the data set using inline R code. 
 
 
 The Variables in this date set are `r names(penguins)`.
